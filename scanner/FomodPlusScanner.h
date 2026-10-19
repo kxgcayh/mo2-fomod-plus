@@ -1,4 +1,4 @@
-﻿#ifndef FOMODPLUSSCANNER_H
+#ifndef FOMODPLUSSCANNER_H
 #define FOMODPLUSSCANNER_H
 
 #include "archiveparser.h"
@@ -35,7 +35,7 @@ class FomodPlusScanner final : public IPluginTool {
     [[nodiscard]] QString name() const override { return "FOMOD Scanner"; } // This should not be translated
     [[nodiscard]] QString author() const override { return "clearing"; }
     [[nodiscard]] QString description() const override { return tr("Scans modlist for files installed via FOMOD"); }
-    [[nodiscard]] VersionInfo version() const override { return { 1, 0, 0, VersionInfo::RELEASE_FINAL }; }
+    [[nodiscard]] VersionInfo version() const override { return { 1, 20, 0, VersionInfo::RELEASE_FINAL }; }
 
     [[nodiscard]] QList<PluginSetting> settings() const override { return {}; }
 

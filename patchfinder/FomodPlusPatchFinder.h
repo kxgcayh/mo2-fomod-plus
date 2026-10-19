@@ -32,7 +32,7 @@ class FomodPlusPatchFinder final : public IPluginTool {
         return tr("Find missing patches from FOMODs in your load order.");
     };
 
-    [[nodiscard]] VersionInfo version() const override { return { 1, 0, 0, VersionInfo::RELEASE_BETA }; };
+    [[nodiscard]] VersionInfo version() const override { return { 1, 20, 0, VersionInfo::RELEASE_FINAL }; };
 
     [[nodiscard]] QList<PluginSetting> settings() const override { return {}; };
 

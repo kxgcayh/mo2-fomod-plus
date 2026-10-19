@@ -35,7 +35,7 @@ class FomodPlusInstaller final : public IPluginInstallerSimple {
     [[nodiscard]] QString name() const override { return StringConstants::Plugin::NAME.data(); }
     [[nodiscard]] QString author() const override { return StringConstants::Plugin::AUTHOR.data(); }
     [[nodiscard]] QString description() const override { return StringConstants::Plugin::DESCRIPTION.data(); }
-    [[nodiscard]] VersionInfo version() const override { return { 1, 0, 0, VersionInfo::RELEASE_FINAL }; }
+    [[nodiscard]] VersionInfo version() const override { return { 1, 20, 0, VersionInfo::RELEASE_FINAL }; }
 
     [[nodiscard]] unsigned int priority() const override { return 999; /* Above installer_fomod's highest priority. */ }
 
