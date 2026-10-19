@@ -5,133 +5,132 @@
     <name>FomodPlusPatchFinder</name>
     <message>
         <location filename="FomodPlusPatchFinder.cpp" line="30"/>
-        <location filename="FomodPlusPatchFinder.h" line="26"/>
         <location filename="FomodPlusPatchFinder.h" line="39"/>
         <source>Patch Finder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="92"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="94"/>
         <source>Nothing of interest yet. The finder learns more as you
 install FOMODs, so check back later!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="101"/>
-        <location filename="FomodPlusPatchFinder.cpp" line="613"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="103"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="615"/>
         <source>Rescan Load Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="119"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="121"/>
         <source>Search patches...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="147"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="149"/>
         <source>Browse all tracked options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="154"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="156"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="154"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="156"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="154"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="156"/>
         <source>Plugin File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="198"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="200"/>
         <source>%1 suggested patches across %2 mods</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="276"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="278"/>
         <source>Reinstall Mod</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="321"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="323"/>
         <source>Masters: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="336"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="338"/>
         <source>Dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="352"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="354"/>
         <source>No suggested patches found. All your patches are installed,
 or run Rescan to check for new ones.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="353"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="355"/>
         <source>No patches match your search.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="410"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="412"/>
         <source>Suggested</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="415"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="417"/>
         <source>Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="419"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="421"/>
         <source>Deselected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="423"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="425"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="427"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="429"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="444"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="446"/>
         <source>Masters: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="495"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="497"/>
         <source>Mod Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="496"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="498"/>
         <source>Could not find &quot;%1&quot; in your mod list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="503"/>
-        <location filename="FomodPlusPatchFinder.cpp" line="515"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="505"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="517"/>
         <source>Archive Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="504"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="506"/>
         <source>No archive file is associated with &quot;%1&quot;.
 The download may have been deleted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="516"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="518"/>
         <source>Archive file not found:
 %1
 
@@ -139,37 +138,37 @@ Re-download from Nexus to reinstall.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="614"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="616"/>
         <source>Rescanning will populate as many existing choices and options as we can, but if some downloads are deleted it may be missing things! It may take a few minutes depending on the size of your load order and all that.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="626"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="628"/>
         <source>Scanning mods...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="626"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="628"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="642"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="644"/>
         <source>Scanning: %1 (%2/%3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="650"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="652"/>
         <source>Rescan Cancelled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="650"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="652"/>
         <source>The rescan was cancelled. Partial results may have been saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="654"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="656"/>
         <source>Rescan complete!
 
 FOMODs scanned: %1
@@ -185,14 +184,14 @@ Parse errors: %4</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="665"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="667"/>
         <source>
 
 Issues:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="670"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="672"/>
         <source>
 
 %1 mods had issues (see log for details)</source>
@@ -202,12 +201,12 @@ Issues:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="676"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="678"/>
         <source>Rescan Complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="FomodPlusPatchFinder.cpp" line="123"/>
+        <location filename="FomodPlusPatchFinder.cpp" line="125"/>
         <source>Rescan</source>
         <translation type="unfinished"></translation>
     </message>

@@ -5,7 +5,8 @@ std::vector<AvailablePatch> PatchFinder::getAvailablePatchesForMod(const MOBase:
     std::vector<AvailablePatch> available_patches = {};
 
     // Verify that the mod has plugins in some shape or form.
-    if (const auto it = m_installedPlugins.find(mod); it == m_installedPlugins.end()) {
+    const auto it = m_installedPlugins.find(mod);
+    if (it == m_installedPlugins.end()) {
         return available_patches;
     }
 
@@ -28,9 +29,10 @@ std::vector<AvailablePatch> PatchFinder::getAvailablePatchesForMod(const MOBase:
             }
 
             // Check if this patch is related to the current mod:
-            // 1. Masters-based: the patch lists this mod as a master
-            bool masterRelated = std::ranges::any_of(
-                option.masters, [&modName](const std::string& master) { return master == modName; });
+            // 1. Masters-based: the patch lists this mod or one of its installed plugins as a master
+            bool masterRelated = std::ranges::any_of(option.masters, [&it, &modName](const std::string& master) {
+                return master == modName || std::ranges::find(it->second, master) != it->second.end();
+            });
 
             // 2. Condition-based: the patch has a file dependency referencing a plugin from this mod
             bool conditionRelated = false;
@@ -87,13 +89,18 @@ std::vector<AvailablePatch> PatchFinder::getAvailablePatchesForMod(const MOBase:
 std::vector<AvailablePatch> PatchFinder::getAvailablePatchesForModList()
 {
     std::vector<AvailablePatch> available_patches = {};
+    std::unordered_set<std::string> seen;
     for (const auto& modName : m_organizer->modList()->allMods()) {
         const auto mod = m_organizer->modList()->getMod(modName);
         if (mod == nullptr) {
             continue;
         }
         for (const auto& available_patch : getAvailablePatchesForMod(mod)) {
-            available_patches.emplace_back(available_patch);
+            const auto key = available_patch.installer_name + ":" + available_patch.fomod_option.step + ":"
+                + available_patch.fomod_option.group + ":" + available_patch.fomod_option.name;
+            if (seen.insert(key).second) {
+                available_patches.emplace_back(available_patch);
+            }
         }
     }
 

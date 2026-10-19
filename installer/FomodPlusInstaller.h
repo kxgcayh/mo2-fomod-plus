@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "stringutil.h"
 
@@ -73,6 +73,8 @@ class FomodPlusInstaller final : public IPluginInstallerSimple {
     QString getSelectedColor() const;
 
     [[nodiscard]] QString getNexusGameName() const;
+
+    [[nodiscard]] QString basePath() const { return mOrganizer ? mOrganizer->basePath() : ""; }
 
   private:
     Logger& log            = Logger::getInstance();

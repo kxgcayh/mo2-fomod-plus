@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Modules
-- Root `CMakeLists.txt` builds two MO2 plugins: `installer/` (`fomod_plus_installer`) and `scanner/` (`fomod_plus_scanner`); both share helpers in `installer/lib/` and `share/`.
+- Root `CMakeLists.txt` builds three MO2 plugins: `installer/` (`fomod_plus_installer`), `scanner/` (`fomod_plus_scanner`), and `patchfinder/` (`fomod_plus_patch_finder`); they share helpers in `installer/lib/` and `share/`.
 - UI assets live in `installer/resources/` and `scanner/resources/`; translations are `.ts` files in each module and packaged `.qm` files under `package/translations/`.
 - Tests sit in `tests/` with XML fixtures in `tests/moduleconf/`; packaging output lands in `package/plugins/`.
 - Clone this repo inside `build/modorganizer_super/<repo>` of your mob checkout so MO2 headers and dependencies resolve.

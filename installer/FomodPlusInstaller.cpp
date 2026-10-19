@@ -1,4 +1,4 @@
-﻿#include "FomodPlusInstaller.h"
+#include "FomodPlusInstaller.h"
 
 #include <QEventLoop>
 #include <QTreeWidget>
@@ -30,10 +30,9 @@ using namespace Qt::Literals::StringLiterals;
 
 bool FomodPlusInstaller::init(IOrganizer* organizer)
 {
-    CrashHandler::initialize();
     mOrganizer    = organizer;
     mFomodContent = make_shared<FomodDataContent>(organizer);
-    log.setLogFilePath(QDir::currentPath().toStdString() + "/logs/fomodplus.log");
+    log.setLogFilePath((std::filesystem::path(mOrganizer->basePath().toStdString()) / "fomodplus.log").string());
     std::cout << "QDir::currentPath(): " << QDir::currentPath().toStdString() << std::endl;
     std::cout << "mOrganizer->basePath() : " << mOrganizer->basePath().toStdString() << std::endl;
 
@@ -45,16 +44,12 @@ bool FomodPlusInstaller::init(IOrganizer* organizer)
 
 void FomodPlusInstaller::setupUiInjection() const
 {
-    if (shouldShowSidebarFilter()) {
-        mOrganizer->gameFeatures()->registerFeature(mFomodContent, 9999, false);
+    try {
+        if (mOrganizer && mOrganizer->gameFeatures() && mFomodContent) {
+            mOrganizer->gameFeatures()->registerFeature(mFomodContent, 9999, false);
+        }
+    } catch (...) {
     }
-
-    mOrganizer->onPluginSettingChanged(
-        [this](const QString& pluginName, const QString& key, const QVariant& oldValue, const QVariant& newValue) {
-            if (pluginName == name() && key == "show_fomod_filter") {
-                toggleFeature(newValue.toBool());
-            }
-        });
 }
 
 void FomodPlusInstaller::toggleFeature(const bool enabled) const
@@ -77,32 +72,62 @@ void FomodPlusInstaller::toggleFeature(const bool enabled) const
 #pragma region Settings
 bool FomodPlusInstaller::shouldFallbackToLegacyInstaller() const
 {
-    return mOrganizer->pluginSetting(name(), "fallback_to_legacy").value<bool>();
+    try {
+        const auto val = mOrganizer->pluginSetting(name(), "fallback_to_legacy");
+        return val.isValid() ? val.value<bool>() : false;
+    } catch (...) {
+        return false;
+    }
 }
 
 bool FomodPlusInstaller::shouldShowImages() const
 {
-    return mOrganizer->pluginSetting(name(), "show_images").value<bool>();
+    try {
+        const auto val = mOrganizer->pluginSetting(name(), "show_images");
+        return val.isValid() ? val.value<bool>() : true;
+    } catch (...) {
+        return true;
+    }
 }
 
 bool FomodPlusInstaller::shouldShowNotifications() const
 {
-    return mOrganizer->pluginSetting(name(), "show_notifications").value<bool>();
+    try {
+        const auto val = mOrganizer->pluginSetting(name(), "show_notifications");
+        return val.isValid() ? val.value<bool>() : false;
+    } catch (...) {
+        return false;
+    }
 }
 
 bool FomodPlusInstaller::shouldShowSidebarFilter() const
 {
-    return mOrganizer->pluginSetting(name(), "show_fomod_filter").value<bool>();
+    try {
+        const auto val = mOrganizer->pluginSetting(name(), "show_fomod_filter");
+        return val.isValid() ? val.value<bool>() : true;
+    } catch (...) {
+        return true;
+    }
 }
 
 bool FomodPlusInstaller::shouldAutoRestoreChoices() const
 {
-    return mOrganizer->pluginSetting(name(), "always_restore_choices").value<bool>();
+    try {
+        const auto val = mOrganizer->pluginSetting(name(), "always_restore_choices");
+        return val.isValid() ? val.value<bool>() : true;
+    } catch (...) {
+        return true;
+    }
 }
 
 bool FomodPlusInstaller::isWizardIntegrated() const
 {
-    return mOrganizer->pluginSetting(name(), "wizard_integration").value<bool>();
+    try {
+        const auto val = mOrganizer->pluginSetting(name(), "wizard_integration");
+        return val.isValid() ? val.value<bool>() : true;
+    } catch (...) {
+        return true;
+    }
 }
 
 void FomodPlusInstaller::toggleShouldShowImages() const
@@ -278,7 +303,11 @@ IPluginInstaller::EInstallResult FomodPlusInstaller::install(
     logMessage(INFO, std::format("FomodPlusInstaller::install - tree size: {}", tree->size()));
 
     auto [infoFile, moduleConfigFile, filePaths] = parseFomodFiles(tree);
-    std::vector<QString> pluginPaths             = {};
+    if (infoFile == nullptr || moduleConfigFile == nullptr) {
+        return RESULT_FAILED;
+    }
+
+    std::vector<QString> pluginPaths = {};
     for (const auto& filePath : filePaths) {
         if (isPluginFile(filePath)) {
             pluginPaths.emplace_back(filePath);
@@ -286,10 +315,6 @@ IPluginInstaller::EInstallResult FomodPlusInstaller::install(
     }
 
     const auto dbEntry = mFomodDb->getEntryFromFomod(moduleConfigFile.get(), pluginPaths, nexusID);
-
-    if (infoFile == nullptr || moduleConfigFile == nullptr) {
-        return RESULT_FAILED;
-    }
 
     // If MO2 didn't provide metadata (e.g. manual download), use values from info.xml
     if (version.isEmpty() && !infoFile->getVersion().empty()) {
@@ -331,7 +356,7 @@ IPluginInstaller::EInstallResult FomodPlusInstaller::install(
             dbEntry->applySelections(*mFomodJson);
             mFomodDb->addEntry(dbEntry);
             mFomodDb->saveToFile();
-        } catch ([[maybe_unused]] Exception& e) {
+        } catch ([[maybe_unused]] const std::exception& e) {
             logMessage(ERR, "Failed to add FomodDB entries.");
             logMessage(ERR, e.what());
         }
@@ -480,22 +505,4 @@ QDialog::DialogCode FomodPlusInstaller::showInstallerWindow(const std::shared_pt
     window->show();
     loop.exec();
     return static_cast<QDialog::DialogCode>(window->result());
-}
-
-void showError(const Exception& e)
-{
-    const QString errorText = "Mod Name: \n"
-                              "Nexus ID: "
-                              "\n"
-                              "Exception: "
-        + QString(e.what()) + "\n";
-
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("FOMOD Plus Error :(");
-    msgBox.setTextFormat(Qt::RichText);
-    msgBox.setText("Sorry this happened. Please copy the following error and report it to me on Nexus or GitHub.\n"
-                   "<pre style='background-color: #f0f0f0; padding: 10px;'>"
-        + errorText + "</pre>");
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
 }

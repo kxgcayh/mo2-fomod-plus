@@ -1,4 +1,4 @@
-﻿#include "ModuleConfiguration.h"
+#include "ModuleConfiguration.h"
 
 #include <format>
 
@@ -76,7 +76,7 @@ bool FlagDependency::deserialize(pugi::xml_node& node)
 {
     flag  = node.attribute("flag").as_string();
     value = node.attribute("value").as_string();
-    trim({ flag, value });
+    trim(flag, value);
     return true;
 }
 
@@ -312,9 +312,6 @@ bool ModuleConfiguration::deserialize(const QString& filePath)
     if (const pugi::xml_parse_result result = doc_.load_file(path.toStdWString().c_str()); !result) {
         throw XmlParseException(std::format("XML parsed with errors: {}", result.description()));
     }
-
-    pugi::xml_document doc;
-    doc.reset(doc_);
 
     const pugi::xml_node configNode = doc_.child("config");
     if (!configNode) {

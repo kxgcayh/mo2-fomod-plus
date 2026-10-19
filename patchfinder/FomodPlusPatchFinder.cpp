@@ -29,22 +29,20 @@ bool FomodPlusPatchFinder::init(IOrganizer* organizer)
     mDialog    = new QDialog();
     mDialog->setWindowTitle(tr("Patch Finder"));
     mDialog->setMinimumSize(400, 200);
-    log.setLogFilePath(QDir::currentPath().toStdString() + "/logs/fomodplus-patchfinder.log");
+    log.setLogFilePath(
+        (std::filesystem::path(organizer->basePath().toStdString()) / "fomodplus-patchfinder.log").string());
 
-    mOrganizer->onUserInterfaceInitialized([this](QMainWindow*) {
-        logMessage(DEBUG, "patches populated.");
-        mPatchFinder = std::make_unique<PatchFinder>(mOrganizer);
-        mPatchFinder->populateInstalledPlugins();
-        mAvailablePatches = mPatchFinder->getAvailablePatchesForModList();
-        loadDismissed();
-        logMessage(DEBUG, "Available Patches: " + std::to_string(mAvailablePatches.size()));
-    });
+    mPatchFinder = std::make_unique<PatchFinder>(mOrganizer);
+    loadDismissed();
 
     return true;
 }
 
-void FomodPlusPatchFinder::display() const
+void FomodPlusPatchFinder::refreshView() const
 {
+    if (!mPatchFinder) {
+        mPatchFinder = std::make_unique<PatchFinder>(mOrganizer);
+    }
     // Clear any existing layout
     if (mDialog->layout() != nullptr) {
         QLayoutItem* item;
@@ -69,7 +67,11 @@ void FomodPlusPatchFinder::display() const
     } else {
         setupEmptyState();
     }
+}
 
+void FomodPlusPatchFinder::display() const
+{
+    refreshView();
     mDialog->exec();
 }
 
@@ -542,8 +544,8 @@ void FomodPlusPatchFinder::onDismissClicked(const int modId, const std::string& 
     saveDismissed();
     logMessage(DEBUG, "Dismissed patch: " + key);
 
-    // Refresh the UI in place by re-calling display()
-    display();
+    // Refresh the UI in place without recursive modal loop
+    refreshView();
 }
 
 std::string FomodPlusPatchFinder::getDismissedFilePath() const
@@ -687,6 +689,6 @@ void FomodPlusPatchFinder::onRescanClicked()
     mAvailablePatches = mPatchFinder->getAvailablePatchesForModList();
     logMessage(DEBUG, "Available Patches after rescan: " + std::to_string(mAvailablePatches.size()));
 
-    // Refresh the UI
-    display();
+    // Refresh the UI without recursive modal loop
+    refreshView();
 }

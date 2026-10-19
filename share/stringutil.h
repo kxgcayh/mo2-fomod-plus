@@ -1,4 +1,4 @@
-﻿#ifndef STRINGCONSTANTS_H
+#ifndef STRINGCONSTANTS_H
 #define STRINGCONSTANTS_H
 #include <QString>
 #include <algorithm>
@@ -68,10 +68,12 @@ inline std::string& trim(std::string& s)
     return s;
 }
 
-inline void trim(const std::vector<std::string>& strings)
+template <typename... Rest>
+inline void trim(std::string& first, Rest&... rest)
 {
-    for (auto s : strings) {
-        trim(s);
+    trim(first);
+    if constexpr (sizeof...(rest) > 0) {
+        trim(rest...);
     }
 }
 

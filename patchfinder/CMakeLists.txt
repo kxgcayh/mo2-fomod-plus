@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.30)
 project(fomod_plus_patch_finder)
 
 add_library(fomod_plus_patch_finder SHARED)
@@ -37,6 +37,7 @@ if (MSVC)
             /WX     # treat all compiler warnings as errors
             /wd4201 # nonstandard extension used: nameless struct/union
             /wd4458 # declaration of 'identifier' hides class member
+            /wd4100 # unreferenced formal parameter (in headers like ifiletree.h)
     )
 endif ()
 

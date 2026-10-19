@@ -1,4 +1,4 @@
-﻿#include "FomodInfoFile.h"
+#include "FomodInfoFile.h"
 #include "XmlParseException.h"
 #include <format>
 #include <pugixml.hpp>
@@ -19,7 +19,7 @@ bool FomodInfoFile::deserialize(const QString& filePath)
 
     const pugi::xml_node fomodNode = doc.child("fomod");
     if (!fomodNode) {
-        throw XmlParseException("No <config> node found");
+        throw XmlParseException("No <fomod> node found");
     }
 
     name        = fomodNode.child("Name").text().as_string();
@@ -28,7 +28,7 @@ bool FomodInfoFile::deserialize(const QString& filePath)
     website     = fomodNode.child("Website").text().as_string();
     description = fomodNode.child("Description").text().as_string();
 
-    trim({ name, author, version, website, description });
+    trim(name, author, version, website, description);
 
     for (pugi::xml_node groupNode : fomodNode.child("Groups").children("element")) {
         groups.emplace_back(groupNode.text().as_string());

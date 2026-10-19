@@ -1,4 +1,4 @@
-﻿#include "stringutil.h"
+#include "stringutil.h"
 #include <QString>
 #include <gtest/gtest.h>
 
@@ -6,6 +6,17 @@ TEST(StringUtil, Trim_Copy)
 {
     std::string str = "  extra spaces  ";
     EXPECT_EQ(trim(str), "extra spaces");
+}
+
+TEST(StringUtil, Trim_MultipleStrings)
+{
+    std::string a = "  first  ";
+    std::string b = "  second\t";
+    std::string c = "\nthird  ";
+    trim(a, b, c);
+    EXPECT_EQ(a, "first");
+    EXPECT_EQ(b, "second");
+    EXPECT_EQ(c, "third");
 }
 
 TEST(StringUtilTests, FormatPluginDescription_UrlConversion)

@@ -91,8 +91,8 @@ void FomodInstallerWindow::closeEvent(QCloseEvent* event)
 
 void FomodInstallerWindow::saveGeometryAndState() const
 {
-    const auto cwd = QDir::currentPath();
-    QSettings settings(cwd + "/fomod-plus-settings.ini", QSettings::IniFormat);
+    const auto basePath = (!mInstaller || mInstaller->basePath().isEmpty()) ? QDir::currentPath() : mInstaller->basePath();
+    QSettings settings(basePath + "/fomod-plus-settings.ini", QSettings::IniFormat);
     settings.setValue("windowGeometry", saveGeometry());
     settings.setValue("centerSplitState", mCenterRow->saveState());
     settings.setValue("leftSplitState", mLeftPane->saveState());
@@ -100,8 +100,8 @@ void FomodInstallerWindow::saveGeometryAndState() const
 
 void FomodInstallerWindow::restoreGeometryAndState()
 {
-    const auto cwd = QDir::currentPath();
-    const QSettings settings(cwd + "/fomod-plus-settings.ini", QSettings::IniFormat);
+    const auto basePath = (!mInstaller || mInstaller->basePath().isEmpty()) ? QDir::currentPath() : mInstaller->basePath();
+    const QSettings settings(basePath + "/fomod-plus-settings.ini", QSettings::IniFormat);
     restoreGeometry(settings.value("windowGeometry").toByteArray());
     mCenterRow->restoreState(settings.value("centerSplitState").toByteArray());
     mLeftPane->restoreState(settings.value("leftSplitState").toByteArray());
@@ -157,7 +157,7 @@ void FomodInstallerWindow::updateCheckboxStates() const
     for (const auto& [objectName, pluginData] : mPluginMap) {
         if (pluginData.plugin->isSelected() != pluginData.uiElement->isChecked()) {
             const auto widgetType = pluginData.uiElement->metaObject()->className();
-            if (objectName != nullptr) {
+            if (!objectName.isEmpty()) {
                 logMessage(DEBUG,
                     "Updating " + objectName.toStdString()
                         + " to state: " + (pluginData.plugin->isSelected() ? "TRUE" : "FALSE") + " because "
@@ -840,7 +840,7 @@ void FomodInstallerWindow::selectPreviouslySelectedOptions() const
     }
     try {
         mViewModel->selectFromJson(mFomodJson);
-    } catch (Exception& e) {
+    } catch (const std::exception& e) {
         logMessage(ERR, std::string("Error selecting previously selected options: ") + e.what(), true);
     }
     updateCheckboxStates();
@@ -851,7 +851,7 @@ void FomodInstallerWindow::onResetChoicesClicked()
     logMessage(INFO, "Resetting choices to author defaults", true);
     try {
         mViewModel->resetToDefaults();
-    } catch (Exception& e) {
+    } catch (const std::exception& e) {
         logMessage(ERR, std::string("Error resetting choices: ") + e.what(), true);
         return;
     }

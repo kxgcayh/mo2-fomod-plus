@@ -23,7 +23,7 @@ class FomodPlusPatchFinder final : public IPluginTool {
   public:
     bool init(IOrganizer* organizer) override;
 
-    [[nodiscard]] QString name() const override { return tr("Patch Finder"); };
+    [[nodiscard]] QString name() const override { return "Patch Finder"; }
 
     [[nodiscard]] QString author() const override { return "clearing"; };
 
@@ -59,6 +59,7 @@ class FomodPlusPatchFinder final : public IPluginTool {
 
     void setupEmptyState() const;
     void setupPatchList() const;
+    void refreshView() const;
     void onRescanClicked();
     void populateSuggested(QWidget* container, const QString& filter) const;
     void populateBrowseTree(QTreeWidget* tree, const QString& filter) const;

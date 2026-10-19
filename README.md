@@ -1,4 +1,4 @@
-﻿# FOMOD Plus for Mod Organizer 2
+# FOMOD Plus for Mod Organizer 2
 ![wizard](./scanner/resources/wizard.gif)
 
 ## Overview
@@ -53,13 +53,16 @@ You'll want to follow all setup instructions for `mob` before proceeding.
 I recommend setting the following system environment variables to make 
 building super seamless:
 
-| Variable  | Example Value                       |
-|-----------|-------------------------------------|
-| `Qt6_DIR` | `C:\Qt\6.7.1\msvc2019_64\lib\cmake` |
+| Variable                 | Example Value                       | Description                                      |
+|--------------------------|-------------------------------------|--------------------------------------------------|
+| `Qt6_DIR`                | `C:\Qt\6.7.1\msvc2019_64\lib\cmake` | CMake directory for Qt6                          |
+| `MO2_PLUGIN_TARGET_DIR`  | `D:\Modding\MO2\plugins`            | (Optional) Directory to install built plugins to |
 
 
-The project is divided into two targets, `fomod_plus_installer` and `fomod_plus_scanner`. Hopefully the 
-distinction is self-explanatory.
+The project is divided into three targets:
+- `fomod_plus_installer` — Main installer window and installation logic.
+- `fomod_plus_scanner` — Tool plugin to scan existing mods and populate FOMOD metadata.
+- `fomod_plus_patch_finder` — Tool plugin to detect and match patches for installed mods.
 
 ### Using vcpkg
 This repo includes `vcpkg.json` + `vcpkg-configuration.json` pointing at the MO2 registry. With `VCPKG_ROOT`

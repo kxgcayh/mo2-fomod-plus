@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <fstream>
 #include <stringutil.h>
@@ -100,10 +100,13 @@ class FomodDB {
 
     void addEntry(const std::shared_ptr<FomodDbEntry>& entry, const bool upsert = true)
     {
-        // TODO: Test this upsert.
         if (upsert) {
-            const auto it = std::ranges::find_if(entries,
-                [&entry](const std::shared_ptr<FomodDbEntry>& e) { return e->getModId() == entry->getModId(); });
+            const auto it = std::ranges::find_if(entries, [&entry](const std::shared_ptr<FomodDbEntry>& e) {
+                if (entry->getModId() > 0 && e->getModId() > 0) {
+                    return e->getModId() == entry->getModId();
+                }
+                return e->getDisplayName() == entry->getDisplayName();
+            });
             if (it != entries.end()) {
                 *it = entry;
             } else {
@@ -121,13 +124,22 @@ class FomodDB {
     void saveToFile() const
     {
         try {
-            std::ofstream file(dbFilePath);
-            if (!file.is_open()) {
-                return;
+            const auto tempPath = dbFilePath + ".tmp";
+            {
+                std::ofstream file(tempPath);
+                if (!file.is_open()) {
+                    return;
+                }
+                file << toJson().dump(2);
+                file.close();
             }
-
-            file << toJson().dump(2); // Pretty-print with 2-space indentation
-            file.close();
+            std::error_code ec;
+            std::filesystem::rename(tempPath, dbFilePath, ec);
+            if (ec) {
+                std::filesystem::copy_file(
+                    tempPath, dbFilePath, std::filesystem::copy_options::overwrite_existing, ec);
+                std::filesystem::remove(tempPath, ec);
+            }
         } catch ([[maybe_unused]] const std::exception& e) {
             // Handle saving errors
         }
@@ -262,12 +274,14 @@ class FomodDB {
                 return;
             }
 
-            // Process each entry in the array
+            // Process each entry into a temporary list first so partial failures don't wipe the DB
+            std::vector<std::shared_ptr<FomodDbEntry>> loadedEntries;
             for (const auto& entryJson : jsonArray) {
-                entries.push_back(std::make_unique<FomodDbEntry>(entryJson));
+                loadedEntries.push_back(std::make_shared<FomodDbEntry>(entryJson));
             }
+            entries = std::move(loadedEntries);
         } catch ([[maybe_unused]] const std::exception& e) {
-            // Handle parsing errors (leave entries empty)
+            // Handle parsing errors (preserve previously loaded entries if any)
         }
     }
 };

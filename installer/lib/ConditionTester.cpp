@@ -1,10 +1,11 @@
-﻿#include "ConditionTester.h"
+#include "ConditionTester.h"
 
 #include "stringutil.h"
 #include "ui/FomodViewModel.h"
 
 #include <iplugingame.h>
 #include <ipluginlist.h>
+#include <QVersionNumber>
 
 std::string setToString(const std::set<int>& set)
 {
@@ -114,12 +115,9 @@ bool ConditionTester::testFileDependency(const FileDependency& fileDependency) c
 
 bool ConditionTester::testGameDependency(const GameDependency& gameDependency) const
 {
-    const auto gameVersion = mOrganizer->managedGame()->gameVersion().toStdString();
-    log.logMessage(DEBUG, "Comparing condition version " + gameDependency.version + " against " + gameVersion);
-    if (gameDependency.version <= gameVersion) {
-        log.logMessage(DEBUG, "Version matches!");
-    }
-    return gameDependency.version <= gameVersion;
+    const auto requiredVersion = QVersionNumber::fromString(QString::fromStdString(gameDependency.version));
+    const auto gameVersion     = QVersionNumber::fromString(mOrganizer->managedGame()->gameVersion());
+    return requiredVersion <= gameVersion;
 }
 
 FileDependencyTypeEnum ConditionTester::getFileDependencyState(const std::string& fileName) const

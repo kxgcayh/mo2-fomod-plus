@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <ifiletree.h>
 #include <nlohmann/json.hpp>
@@ -65,9 +65,6 @@ class FileInstaller {
     nlohmann::json generateFomodJson() const;
 
     std::string getQualifiedFilePath(const std::string& treePath) const;
-
-    std::vector<std::string> collectPositiveFileNamesFromDependencyPatterns(
-        const std::vector<DependencyPattern>& patterns);
 
     void addFiles(std::vector<File>& main, std::vector<File> toAdd) const;
 

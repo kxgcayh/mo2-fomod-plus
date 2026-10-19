@@ -408,7 +408,7 @@ bool FomodViewModel::togglePlugin(GroupRef group, PluginRef plugin, const bool s
     // Disable other radio options first.
     if (selected && isRadioLike(group)) {
         for (const auto& otherPlugin : group->getPlugins()) {
-            if (otherPlugin != plugin && plugin->isSelected()) {
+            if (otherPlugin != plugin && otherPlugin->isSelected()) {
                 logMessage(DEBUG,
                     "Deselecting " + otherPlugin->getName() + " because " + plugin->getName() + " was selected.");
                 otherPlugin->setSelected(false);

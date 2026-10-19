@@ -1,12 +1,14 @@
-﻿vsbuild/
+vsbuild/
 .idea/
 cmake-build-debug/
 install/
 .claude/
 package/
+package-*/
 nul
 .cache/
 *.log
+*.def
 vsbuild*/
 vcpkg_installed/
 CLAUDE.md

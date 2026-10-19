@@ -64,14 +64,15 @@ those names):
 | beta11   | `v2.5.3-beta.2`  | `v2.5.3-beta.2`  | 6.11.0 |
 | beta12   | `v2.6.0-dev.5`   | `v2.6.0-dev.1`   | 6.11.1 |
 
-### Why no 2.5.2 artifact
+### MO2 2.5.2 Compatibility & Standalone Builds
 
-MO2 2.5.2 predates the standalone CMake/vcpkg build. Its `cmake_common`
-(`2_5_x`) `mo2.cmake` requires `BOOST_ROOT`, `FMT_ROOT`, and `PYTHON_ROOT` and
-resolves dependencies against a full `modorganizer_super` umbrella layout (Boost,
-fmt, googletest each built the umbrella way). That environment is produced by
-MO2's classic [`mob`](https://github.com/ModOrganizer2/mob) tool, not by a few CI
-steps — and the modern `build-with-mob-action` doesn't fit it either (`2_5_x`
-ships no `CMakePresets`, and `mob.ini` pins Qt 6.11). Producing a 2.5.2 artifact
-would require a separate, heavyweight mob-based workflow. Given 2.5.2 → 2.5.3 is a
-minor bump, the `beta11` build (uibase `2.5.3-beta.2`) is the closest available.
+MO2 2.5.2 cannot run plugins built for MO2 2.5.3+ due to binary interface (ABI) breaks:
+1. **Qt ABI:** MO2 2.5.2 uses **Qt 6.7.1**, while MO2 2.5.3+ uses **Qt 6.11.x**. Qt 6.8 introduced breaking layout changes to `QString` and `QArrayDataPointer`, causing immediate page faults when types are shared across the plugin boundary.
+2. **`uibase` VTable:** MO2 2.5.3 added new virtual methods to `IOrganizer` (`instanceName()`, `instanceManager()`, `executablesList()`), shifting virtual table offsets by 24 bytes compared to 2.5.2.
+
+**Building for MO2 2.5.2 without `mob`:**
+A full `mob` umbrella build is **not** required to compile for MO2 2.5.2. Since FOMOD Plus only links against `uibase` and `archive` exports:
+1. Check out `uibase` headers from git tag `v2.5.2`.
+2. Generate import libraries (`uibase.lib` and `archive.lib`) directly from your MO2 2.5.2 `uibase.dll` and `archive.dll` using `llvm-dlltool` (or MSVC `lib.exe`).
+3. Build using a Qt 6.7 toolchain (e.g., Qt 6.7.3 MSVC 64-bit) with `FOMOD_PLUS_BUILD_PATCHFINDER=ON`.
+4. Point `MO2_PLUGIN_TARGET_DIR` to your MO2 2.5.2 `plugins` directory.

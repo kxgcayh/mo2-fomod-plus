@@ -1,4 +1,4 @@
-﻿#include "FileInstaller.h"
+#include "FileInstaller.h"
 
 #include <utility>
 
@@ -128,52 +128,6 @@ std::string FileInstaller::getQualifiedFilePath(const std::string& treePath) con
     return qualifiedPath;
 }
 
-std::vector<std::string> FileInstaller::collectPositiveFileNamesFromDependencyPatterns(
-    const std::vector<DependencyPattern>& patterns)
-{
-    std::vector<std::string> usableFileDependencyPluginNames = {};
-    logMessage(DEBUG, "Collecting positive file names from " + std::to_string(patterns.size()) + " patterns.");
-
-    for (const auto& pattern : patterns) {
-        if (pattern.type == PluginTypeEnum::NotUsable) {
-            logMessage(DEBUG, "Skipping pattern marked as NotUsable.");
-            continue;
-        }
-
-        if (pattern.dependencies.fileDependencies.empty() && pattern.dependencies.nestedDependencies.empty()) {
-            logMessage(DEBUG, "Skipping pattern with no dependencies.");
-            continue;
-        }
-
-        const auto fileDependencies   = pattern.dependencies.fileDependencies;
-        const auto nestedDependencies = pattern.dependencies.nestedDependencies;
-
-        for (const auto& fileDependency : fileDependencies) {
-            if (fileDependency.state != FileDependencyTypeEnum::Active) {
-                continue;
-            }
-            usableFileDependencyPluginNames.emplace_back(fileDependency.file);
-            logMessage(DEBUG, "Adding active file dependency: " + fileDependency.file);
-        }
-
-        for (const auto& nestedDependency : nestedDependencies) {
-            for (const auto& fileDependency : nestedDependency.fileDependencies) {
-                if (fileDependency.state != FileDependencyTypeEnum::Active) {
-                    continue;
-                }
-                usableFileDependencyPluginNames.emplace_back(fileDependency.file);
-                logMessage(DEBUG, "Adding nested active file dependency: " + fileDependency.file);
-            }
-        }
-        // Not handling twice-nested dependencies now. IDK if that's even feasible.
-    }
-
-    logMessage(DEBUG,
-        "CollectPositiveFileNamesFromDependencyPatterns found " + std::to_string(usableFileDependencyPluginNames.size())
-            + " entries.");
-    return usableFileDependencyPluginNames;
-}
-
 // Generic vector appender
 void FileInstaller::addFiles(std::vector<File>& main, std::vector<File> toAdd) const
 {
@@ -242,7 +196,7 @@ std::vector<File> FileInstaller::collectFilesToInstall() const
     // Files will all have a default priority of 0 if not specified, so the order should also be informed by the
     // order they appear within XML. That's why we put conditionalFileInstalls after.
     logMessage(DEBUG, "Sorting " + std::to_string(allFiles.size()) + " files by priority.");
-    std::ranges::sort(allFiles, [](const auto& a, const auto& b) { return a.priority < b.priority; });
+    std::ranges::stable_sort(allFiles, [](const auto& a, const auto& b) { return a.priority < b.priority; });
 
     for (const auto& toInstall : allFiles) {
         logMessage(DEBUG, "File to install: " + toInstall.source);

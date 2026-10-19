@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "stringutil.h"
 
 #include <QDir>
@@ -31,7 +31,7 @@ inline std::ostream& operator<<(std::ostream& os, const Archive::Error& error)
 inline bool hasFomodFiles(const std::vector<FileData*>& files)
 {
     bool hasModuleXml = false;
-    bool hasInfoXml   = false;
+    [[maybe_unused]] bool hasInfoXml = false;
 
     for (const auto* file : files) {
         if (endsWithCaseInsensitive(file->getArchiveFilePath(), StringConstants::FomodFiles::W_MODULE_CONFIG.data())) {
